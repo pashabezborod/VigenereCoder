@@ -78,6 +78,26 @@ public class DataBaseSQLite implements DataBase {
         }
     }
 
+    public void beginTransaction() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("BEGIN TRANSACTION;")) {
+            statement.execute();
+        }
+    }
+
+    public void endTransaction() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("END TRANSACTION;")) {
+            statement.execute();
+        }
+    }
+
+    public void failedTransaction() {
+        try (PreparedStatement statement = connection.prepareStatement("ROLLBACK;")) {
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clear() throws SQLException {
         try (PreparedStatement statement =
                 connection.prepareStatement("DELETE FROM nameAndPass;")) {
