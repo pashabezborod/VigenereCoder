@@ -52,8 +52,9 @@ public class DataBaseSQLiteTest {
         for (Map.Entry<String, String> entry : testData.entrySet()) {
             dataBase.deletePass(entry.getKey());
             try {
-                assert !entry.getValue().equals(dataBase.readPassword(entry.getKey()));
-            } catch (Exception ignored) {
+                if (dataBase.readPassword(entry.getKey()) != null) throw new RuntimeException();
+            } catch (SQLException e) {
+                assert e.getMessage().equals("ResultSet closed") : "deletePassword failed!";
             }
         }
     }
