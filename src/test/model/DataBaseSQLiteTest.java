@@ -3,6 +3,9 @@ package test.model;
 import main.model.DataBaseSQLite;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,7 +24,9 @@ public class DataBaseSQLiteTest {
 
     @Before
     public void initialize() throws Exception {
-        dataBase = new DataBaseSQLite("/home/paul/coderTest.s3db");
+        File tempFile = File.createTempFile("coderTest", "s3db");
+        tempFile.deleteOnExit();
+        dataBase = new DataBaseSQLite(tempFile.getPath());
         dataBase.clear();
 
         for(int i = 0; i < 100; i++) {
