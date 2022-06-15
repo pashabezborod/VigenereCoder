@@ -83,7 +83,7 @@ public class DataBaseSQLite implements DataBase {
                 connection.prepareStatement("DELETE FROM nameAndPass;")) {
             statement.execute();
         }
-    }  //TODO make this method private
+    }  //TODO make this method private because I need it for tests only?.
 
     public void close() {
         try {
