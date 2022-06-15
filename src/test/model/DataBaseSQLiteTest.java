@@ -11,7 +11,13 @@ public class DataBaseSQLiteTest {
 
     private DataBaseSQLite dataBase;
     private final Map<String, String> testData = new HashMap<>();
-    Random random = new Random();
+    Random random;
+
+    {
+        int seed = new Random().nextInt();
+        random = new Random(seed);
+        System.out.println(seed);
+    }
 
     @Before
     public void initialize() throws Exception {
@@ -61,7 +67,7 @@ public class DataBaseSQLiteTest {
 
     private void readPassword() throws Exception {
         for (Map.Entry<String, String> entry : testData.entrySet()) {
-            assert entry.getValue().equals(dataBase.readPassword(entry.getKey())) : "Read password failed!";
+            assert entry.getValue().equals(dataBase.readPassword(entry.getKey())) : "readPassword failed!";
         }
     }
 
