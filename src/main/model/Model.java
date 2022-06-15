@@ -74,8 +74,14 @@ public class Model {
                 data.put(name, readPassword(name));
             }
             coding.setCrypt(newCrypt);
-            for(String name : readAllNames()) {
-                updatePass(name, data.get(name));
+            try {
+                dataBase.beginTransaction();
+                for(String name : readAllNames())
+                    updatePass(name, data.get(name));
+                dataBase.endTransaction();
+            } catch (SQLException e) {
+                dataBase.failedTransaction();
+                connector.onErrorMessage("Database error. Please try again", true, e);
             }
             connector.onInfoMessage("Crypt changed. All passwords refreshed.");
         }
