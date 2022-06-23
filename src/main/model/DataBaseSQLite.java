@@ -14,9 +14,9 @@ public class DataBaseSQLite implements DataBase {
         try {
             Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
         } catch (ClassNotFoundException e) {
-            throw new ClassNotFoundException("Can't find JDBC driver");
+            throw new ClassNotFoundException("Can't find JDBC driver: " + e.getMessage(), e);
         } catch (Exception e) {
-            throw new ClassNotFoundException("Wrong JDBC driver");
+            throw new ClassNotFoundException("Wrong JDBC driver: " + e.getMessage(), e);
         }
         connection = DriverManager.getConnection("jdbc:sqlite:" + sqlPath);
     }
@@ -31,7 +31,7 @@ public class DataBaseSQLite implements DataBase {
     }
 
     public ArrayList<String> readAllNames() throws SQLException {
-        try (ResultSet resultSet = connection.prepareStatement("SELECT * FROM nameAndPass;").executeQuery()) {
+        try (ResultSet resultSet = connection.prepareStatement("SELECT name FROM nameAndPass;").executeQuery()) {
             ArrayList<String> list = new ArrayList<>();
             while (resultSet.next()) {
                 list.add(resultSet.getString("name"));
@@ -42,7 +42,7 @@ public class DataBaseSQLite implements DataBase {
 
     public String readPassword(String name) throws SQLException {
         try (PreparedStatement statement =
-                     connection.prepareStatement("SELECT * FROM nameAndPass WHERE name=?;")) {
+                     connection.prepareStatement("SELECT pass FROM nameAndPass WHERE name=?;")) {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
@@ -78,12 +78,32 @@ public class DataBaseSQLite implements DataBase {
         }
     }
 
+    public void beginTransaction() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("BEGIN TRANSACTION;")) {
+            statement.execute();
+        }
+    }
+
+    public void endTransaction() throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement("END TRANSACTION;")) {
+            statement.execute();
+        }
+    }
+
+    public void failedTransaction() {
+        try (PreparedStatement statement = connection.prepareStatement("ROLLBACK;")) {
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void clear() throws SQLException {
         try (PreparedStatement statement =
                 connection.prepareStatement("DELETE FROM nameAndPass;")) {
             statement.execute();
         }
-    }  //TODO make this method private
+    }  //TODO make this method private because I need it for tests only?.
 
     public void close() {
         try {

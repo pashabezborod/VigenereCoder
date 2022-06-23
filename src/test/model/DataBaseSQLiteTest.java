@@ -3,6 +3,9 @@ package test.model;
 import main.model.DataBaseSQLite;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.File;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -11,11 +14,19 @@ public class DataBaseSQLiteTest {
 
     private DataBaseSQLite dataBase;
     private final Map<String, String> testData = new HashMap<>();
-    Random random = new Random();
+    Random random;
+
+    {
+        int seed = new Random().nextInt();
+        random = new Random(seed);
+        System.out.println(seed);
+    }
 
     @Before
     public void initialize() throws Exception {
-        dataBase = new DataBaseSQLite("/home/paul/coderTest.s3db");
+        File tempFile = File.createTempFile("coderTest", "s3db");
+        tempFile.deleteOnExit();
+        dataBase = new DataBaseSQLite(tempFile.getPath());
         dataBase.clear();
 
         for(int i = 0; i < 100; i++) {
@@ -41,8 +52,9 @@ public class DataBaseSQLiteTest {
         for (Map.Entry<String, String> entry : testData.entrySet()) {
             dataBase.deletePass(entry.getKey());
             try {
-                assert !entry.getValue().equals(dataBase.readPassword(entry.getKey()));
-            } catch (Exception ignored) {
+                if (dataBase.readPassword(entry.getKey()) != null) throw new RuntimeException();
+            } catch (SQLException e) {
+                assert e.getMessage().equals("ResultSet closed") : "deletePassword failed!";
             }
         }
     }
@@ -61,7 +73,7 @@ public class DataBaseSQLiteTest {
 
     private void readPassword() throws Exception {
         for (Map.Entry<String, String> entry : testData.entrySet()) {
-            assert entry.getValue().equals(dataBase.readPassword(entry.getKey())) : "Read password failed!";
+            assert entry.getValue().equals(dataBase.readPassword(entry.getKey())) : "readPassword failed!";
         }
     }
 

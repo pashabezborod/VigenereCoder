@@ -11,4 +11,7 @@ public interface DataBase extends AutoCloseable {
     void deletePass(String name) throws SQLException;
     void updatePass(String name, String newPass) throws SQLException;
     void clear() throws SQLException;
+    void beginTransaction() throws SQLException;
+    void endTransaction() throws SQLException;
+    void failedTransaction();
 }
