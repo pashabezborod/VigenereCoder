@@ -22,7 +22,7 @@ public class SwingUserView extends JFrame implements UserView {
     private JTextField newPassword;
 
     public SwingUserView(Connector connector) {
-        super("Coder 1.2");
+        super("VigenereCoder");
         this.connector = connector;
     }
 

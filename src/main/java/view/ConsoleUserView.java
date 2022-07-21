@@ -50,17 +50,16 @@ public class ConsoleUserView implements UserView {
     private void get() {
         String name = callInputMessage("Enter a password name:", null);
         if (!connector.getAllNames().contains(name)) {
-            print("No such a password:");
+            print("No such a password");
             return;
         }
-        print("Your password\n\n" + connector.getPassword(name));
+        print("\nYour password:\n\n" + connector.getPassword(name));
     }
 
     private void create() {
         String name = callInputMessage("Enter new password name:", null);
         String pass = callInputMessage("Enter new password:", null);
         connector.addNewPassword(name, pass);
-        print("Password for " + name + " added");
     }
 
     private void update() {
@@ -71,7 +70,6 @@ public class ConsoleUserView implements UserView {
         }
         String newPass = callInputMessage("Enter a new password:", null);
         connector.changePassword(name, newPass);
-        print("Password for " + name + " changed");
     }
 
     private void delete() {
@@ -81,13 +79,11 @@ public class ConsoleUserView implements UserView {
             return;
         }
         connector.deletePassword(name);
-        print("Password for " + name + " deleted");
     }
 
     private void change() {
         String crypt = callInputMessage("Enter new crypt:", null);
         connector.changeCrypt(crypt);
-        print("Crypt was changed");
     }
 
     private void exit() {
@@ -98,11 +94,12 @@ public class ConsoleUserView implements UserView {
     @Override
     public void callErrorMessage(String message) {
         print(message);
+        System.exit(1);
     }
 
     @Override
     public void callInfoMessage(String message) {
-
+        print("\n" + message + "\n");
     }
 
     @Override
