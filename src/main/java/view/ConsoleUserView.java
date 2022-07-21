@@ -27,7 +27,9 @@ public class ConsoleUserView implements UserView {
                     - delete - delete
                     - change - change crypt
                     - exit - close app""");
-            switch (input = readString()) {
+            input = readString();
+            print("");
+            switch (input) {
                 case "show" -> show();
                 case "get" -> get();
                 case "create" -> create();
@@ -42,7 +44,6 @@ public class ConsoleUserView implements UserView {
     }
 
     private void show() {
-        print("");
         for (String temp : connector.getAllNames()) print("- " + temp);
     }
 

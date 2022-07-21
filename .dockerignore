@@ -1,0 +1,6 @@
+.github/
+.git/
+.gitignore
+.idea/
+target/
+VigenereCoder.iml
