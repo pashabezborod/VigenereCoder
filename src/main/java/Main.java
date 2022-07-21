@@ -9,8 +9,7 @@ public class Main {
 
     public static void main(String... args) {
         String sqlPath = System.getProperty("user.home") + File.separator + ".s3db";
-        System.out.println(sqlPath);
-        if (args.length != 1) errExit("Need arguments." + argsDescription);
+        if (args.length == 0) runSwing(sqlPath);
         switch (args[0]) {
             case "-G" -> runSwing(sqlPath);
             case "-C" -> runConsole(sqlPath, false);
@@ -25,11 +24,11 @@ public class Main {
 
     private static void runConsole(String sqlPath, boolean isDocker) {
         if (isDocker) {
-            sqlPath = "/app/data.s3db";
+            sqlPath = "/app/.s3db";
             if (Files.notExists(Path.of(sqlPath))) errExit("""
                     Can't find password DB.
                     Use following docker command:
-                    docker run pashabezborod/vigenereCoder -v path_to_DB:/app/data.s3db""");
+                    docker run -it -v path_to_DB.s3db:/app/.s3db pashabezborod/vigenereCoder""");
         }
         new Connector(sqlPath, "CONSOLE");
     }

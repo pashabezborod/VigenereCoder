@@ -16,7 +16,7 @@ public class Connector {
     public Connector(String sqlPath, String mode) {
         switch (mode) {
             case "SWING" -> userView = new SwingUserView(this);
-            case "CONSOLE" -> userView = null;                                                                           //TODO process it later
+            case "CONSOLE" -> userView = new ConsoleUserView(this);
             default -> System.exit(1);
         }
             String crypt = userView.callInputMessage("Enter your crypt", "VigenereCoder");
