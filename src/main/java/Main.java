@@ -10,7 +10,7 @@ public class Main {
     public static void main(String... args) {
         String sqlPath = System.getProperty("user.home") + File.separator + ".s3db";
         System.out.println(sqlPath);
-        if (args.length != 1) errExit("Need arguments." + argsDescription);
+        if (args.length == 0) runSwing(sqlPath);
         switch (args[0]) {
             case "-G" -> runSwing(sqlPath);
             case "-C" -> runConsole(sqlPath, false);
