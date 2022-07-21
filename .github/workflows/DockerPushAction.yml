@@ -24,18 +24,18 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: pashabezborod/vigenereCoder:latest
+          tags: pashabezborod/vigenere-coder:latest
       -
         name: Release Build and Push
         if: github.ref_type == 'tag'
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: pashabezborod/vigenereCoder:${{ github.ref_name }}
+          tags: pashabezborod/vigenere-coder:${{ github.ref_name }}
       -
         name: Test Build
         if: github.ref_name != 'master' && github.ref_type == 'branch'
         uses: docker/build-push-action@v3
         with:
           push: false
-          tags: pashabezborod/vigenereCoder:test
+          tags: pashabezborod/vigenere-coder:test
