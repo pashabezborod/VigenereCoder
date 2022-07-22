@@ -9,7 +9,7 @@ App will create an empty s3db file in your home folder or will use an exists one
 If you want to transfer your passwords - copy .s3db file from your home directory.  
 It also supports console mode - if you give `-C` as an argument.
 
-### Docker
+### Docker 
 
 You can use a docker image to launch this application with following command:
 ```
