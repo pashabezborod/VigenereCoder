@@ -2,6 +2,7 @@ package github.vigenerecoder.view;
 
 import github.vigenerecoder.connector.Connector;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 @Component
+@Lazy
 public class SwingUserView extends JFrame implements UserView {
 
     private Connector connector;
