@@ -1,28 +1,44 @@
-package connector;
+package github.vigenerecoder.connector;
 
 
-import model.*;
-import view.*;
+import github.vigenerecoder.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+import github.vigenerecoder.view.*;
 
 import java.util.ArrayList;
 
+@Component
+@Lazy
 public class Connector {
-    private final Model model;
+
+
+    private Model model;
     private UserView userView;
 
     private final String WRONG_INPUT_DESCRIPTION =
             "Incorrect input data!\nUse digits, English letters and symbols only.";
 
-    public Connector(String sqlPath, String mode) {
-        switch (mode) {
-            case "SWING" -> userView = new SwingUserView(this);
-            case "CONSOLE" -> userView = new ConsoleUserView(this);
-            default -> System.exit(1);
+    public void startApp(String sqlPath) {
+        String crypt = userView.initializeCrypt();
+        if (checkString(crypt)) userView.callErrorMessage(WRONG_INPUT_DESCRIPTION);
+        model.getCoding().setCrypt(crypt);
+        try {
+            model.getDataBase().connect(sqlPath);
+        } catch (MyCriticalException e) {
+            onErrorMessage(e);
         }
-            String crypt = userView.callInputMessage("Enter your crypt", "VigenereCoder");
-            if (checkString(crypt)) userView.callErrorMessage(WRONG_INPUT_DESCRIPTION);
-            model = new Model(sqlPath, this, crypt);
-            userView.initialize();
+        userView.initializeUI();
+    }
+
+    @Autowired
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    public void setUserView(UserView userView) {
+        this.userView = userView;
     }
 
     public void deletePassword(String name) {

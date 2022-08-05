@@ -1,4 +1,4 @@
-package model;
+package github.vigenerecoder.model;
 
 public interface Coding {
     String codeString(String string);

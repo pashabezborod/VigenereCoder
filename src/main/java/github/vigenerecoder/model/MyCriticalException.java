@@ -1,4 +1,4 @@
-package model;
+package github.vigenerecoder.model;
 
 public class MyCriticalException extends Exception {
     public MyCriticalException(String message, Throwable cause) {

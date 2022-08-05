@@ -1,18 +1,16 @@
-package view;
+package github.vigenerecoder.view;
 
-import connector.Connector;
+import github.vigenerecoder.connector.Connector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+@Component
 public class ConsoleUserView implements UserView {
     Connector connector;
 
-    public ConsoleUserView(Connector connector) {
-        this.connector = connector;
-    }
-
     private void mainLoop() {
-        print("Welcome to the VigenereCoder!");
         String input = "";
         while (!input.equals("exit")) {
             print("""
@@ -43,12 +41,22 @@ public class ConsoleUserView implements UserView {
 
     }
 
+    @Override
+    public String initializeCrypt() {
+        return callInputMessage("Welcome to the Vigenere coder!\nEnter your crypt");
+    }
+
+    @Autowired
+    public void setConnector(Connector connector) {
+        this.connector = connector;
+    }
+
     private void show() {
         for (String temp : connector.getAllNames()) print("- " + temp);
     }
 
     private void get() {
-        String name = callInputMessage("Enter a password name:", null);
+        String name = callInputMessage("Enter a password name:");
         if (!connector.getAllNames().contains(name)) {
             print("No such a password");
             return;
@@ -57,23 +65,23 @@ public class ConsoleUserView implements UserView {
     }
 
     private void create() {
-        String name = callInputMessage("Enter new password name:", null);
-        String pass = callInputMessage("Enter new password:", null);
+        String name = callInputMessage("Enter new password name:");
+        String pass = callInputMessage("Enter new password:");
         connector.addNewPassword(name, pass);
     }
 
     private void update() {
-        String name = callInputMessage("Enter a password name to change:", null);
+        String name = callInputMessage("Enter a password name to change:");
         if (!connector.getAllNames().contains(name)) {
             callInfoMessage("No such a password");
             return;
         }
-        String newPass = callInputMessage("Enter a new password:", null);
+        String newPass = callInputMessage("Enter a new password:");
         connector.changePassword(name, newPass);
     }
 
     private void delete() {
-        String name = callInputMessage("Enter a password to delete:", null);
+        String name = callInputMessage("Enter a password to delete:");
         if (!connector.getAllNames().contains(name)) {
             callInfoMessage("No such a password");
             return;
@@ -82,7 +90,7 @@ public class ConsoleUserView implements UserView {
     }
 
     private void change() {
-        String crypt = callInputMessage("Enter new crypt:", null);
+        String crypt = callInputMessage("Enter new crypt:");
         connector.changeCrypt(crypt);
     }
 
@@ -102,14 +110,13 @@ public class ConsoleUserView implements UserView {
         print("\n" + message + "\n");
     }
 
-    @Override
-    public String callInputMessage(String message, String title) {
+    public String callInputMessage(String message) {
         print(message);
         return readString();
     }
 
     @Override
-    public void initialize() {
+    public void initializeUI() {
         print("Password accepted.\nData Base connected.");
         mainLoop();
     }

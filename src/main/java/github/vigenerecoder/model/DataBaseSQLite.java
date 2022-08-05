@@ -1,24 +1,22 @@
-package model;
+package github.vigenerecoder.model;
+
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 
+@Component
 public class DataBaseSQLite implements DataBase {
     private Connection connection;
 
-    public DataBaseSQLite(String sqlPath) throws MyCriticalException {
-        connect(sqlPath);
-        initializeDB();
-    }
-
-    private void connect(String sqlPath) throws MyCriticalException {
+    public void connect(String sqlPath) throws MyCriticalException {
         try {
             Class.forName("org.sqlite.JDBC").getDeclaredConstructor().newInstance();
             connection = DriverManager.getConnection("jdbc:sqlite:" + sqlPath);
         } catch (Exception e) {
             throw new MyCriticalException("Data Base connection failed!", e);
         }
-
+        initializeDB();
     }
 
     private void initializeDB() throws MyCriticalException {

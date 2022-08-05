@@ -1,24 +1,39 @@
-package model;
+package github.vigenerecoder.model;
 
-import connector.Connector;
+import github.vigenerecoder.connector.Connector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.TreeMap;
 
+@Component
 public class Model {
     private DataBase dataBase;
     private Connector connector;
     private Coding coding;
 
-    public Model(String sqlPath, Connector connector, String crypt) {
-        try {
-            dataBase = new DataBaseSQLite(sqlPath);
-            coding = new VigenereCoding(crypt);
-            this.connector = connector;
-        } catch (MyCriticalException e) {
-            connector.onErrorMessage(e);
-        }
+    @Autowired
+    public void setConnector(Connector connector) {
+        this.connector = connector;
+    }
+    @Autowired
+    public void setCoding(Coding coding) {
+        this.coding = coding;
+    }
+
+    public Coding getCoding() {
+        return coding;
+    }
+
+    @Autowired
+    public void setDataBase(DataBase dataBase) {
+        this.dataBase = dataBase;
+    }
+
+    public DataBase getDataBase() {
+        return dataBase;
     }
 
     public ArrayList<String> readAllNames() {

@@ -1,13 +1,12 @@
-package view;
+package github.vigenerecoder.view;
 
 public interface UserView {
     void callErrorMessage(String message);
 
     void callInfoMessage(String message);
+    void initializeUI();
 
-    String callInputMessage(String message, String title);
-
-    void initialize();
+    String initializeCrypt();
 
     void refreshData();
 }
