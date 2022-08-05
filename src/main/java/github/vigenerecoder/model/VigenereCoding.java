@@ -1,14 +1,13 @@
-package model;
+package github.vigenerecoder.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class VigenereCoding implements Coding {
 
     private String crypt;
 
     public void setCrypt(String crypt) {
-        this.crypt = crypt;
-    }
-
-    public VigenereCoding(String crypt) {
         this.crypt = crypt;
     }
 

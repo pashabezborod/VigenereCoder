@@ -1,4 +1,4 @@
-package view;
+package github.vigenerecoder.view;
 
 import javax.swing.*;
 

@@ -1,6 +1,8 @@
-package view;
+package github.vigenerecoder.view;
 
-import connector.Connector;
+import github.vigenerecoder.connector.Connector;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -13,22 +15,27 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+@Component
 public class SwingUserView extends JFrame implements UserView {
 
-    private final Connector connector;
+    private Connector connector;
     private JComboBox<String> names;
     private JTextField yourPassword;
     private JTextField newPassName;
     private JTextField newPassword;
 
-    public SwingUserView(Connector connector) {
-        super("VigenereCoder");
+    @Override
+    public String initializeCrypt() {
+        return callInputMessage("Enter your crypt", "Welcome to Vigenere Coder!");
+    }
+
+    @Autowired
+    public void setConnector(Connector connector) {
         this.connector = connector;
     }
 
     @Override
     public void callErrorMessage(String message) {
-
         SwingMessage.showErrorMessage(message, this);
     }
 
@@ -37,12 +44,11 @@ public class SwingUserView extends JFrame implements UserView {
         SwingMessage.showInfoMessage(message, this);
     }
 
-    @Override
     public String callInputMessage(String message, String title) {
         return SwingMessage.getInputData(message, title, this);
     }
 
-    public void initialize() {
+    public void initializeUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(705, 290);
         setLayout(null);

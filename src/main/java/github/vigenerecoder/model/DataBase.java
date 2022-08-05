@@ -1,8 +1,10 @@
-package model;
+package github.vigenerecoder.model;
 
 import java.util.ArrayList;
 
 public interface DataBase extends AutoCloseable {
+
+    void connect(String sqlPath) throws MyCriticalException;
     ArrayList<String> readAllNames() throws MyCriticalException;
 
     String readPassword(String name) throws MyCriticalException;
